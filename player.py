@@ -31,6 +31,9 @@ class Player():
     def move_west(self):
         self.move(dx=-1, dy=0)
 
+    def exit(self):
+        Player.quit()
+
     def attack(self, enemy):
         best_weapon = None
         max_dmg = 0
@@ -51,3 +54,4 @@ class Player():
      action_method = getattr(self, action.method.__name__)
      if action_method:
                 action_method(**kwargs)
+

@@ -30,6 +30,9 @@ class MoveWest(Action):
     def __init__(self):
         super().__init__(method=Player.move_west, name='Move west', hotkey='w')
  
+class Exit(Action):
+    def __init__(self, tile):
+        super().__init__(method=Player.exit, name="Quit", hotkey='q')
  
 class ViewInventory(Action):
     """Prints the player's inventory"""
@@ -43,5 +46,6 @@ class Attack(Action):
 class Flee(Action):
     def __init__(self, tile):
         super().__init__(method=Player.flee, name="Flee", hotkey='f', tile=tile)
+
 
 

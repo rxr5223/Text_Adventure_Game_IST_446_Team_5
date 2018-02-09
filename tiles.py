@@ -1,4 +1,4 @@
-import items, enemies, actions, world
+import items, enemies, actions, world, sys, time, random
  
 class MapTile:
     def __init__(self, x, y):
@@ -32,11 +32,26 @@ class MapTile:
 
 
 class StartingRoom(MapTile):
+    # Method to print slow texts
+    def print_slow(str):
+        for letter in str:
+            sys.stdout.write(letter)
+            sys.stdout.flush()
+            time.sleep(0.010)
+
+    print_slow("""
+        -------------------------------------------------------------------
+        |                                                                  |
+        |                                                                  |
+        -------------------------------------------------------------------
+        """)
     # override the intro_text method in the superclass
     def intro_text(self):
         return """
-        You find yourself in a cave with a flickering torch on the wall.
-        You can make out four paths, each equally as dark and foreboding.
+        -------------------------------------------------------------------
+        | You find yourself in a cave with a flickering torch on the wall. |
+        | You can make out four paths, each equally as dark and foreboding.|
+        -------------------------------------------------------------------
         """
  
     def modify_player(self, player):
