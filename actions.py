@@ -30,14 +30,14 @@ class MoveWest(Action):
     def __init__(self):
         super().__init__(method=Player.move_west, name='Move west', hotkey='w')
  
-class Exit(Action):
-    def __init__(self, tile):
-        super().__init__(method=Player.exit, name="Quit", hotkey='q')
- 
 class ViewInventory(Action):
     """Prints the player's inventory"""
     def __init__(self):
         super().__init__(method=Player.print_inventory, name='View inventory', hotkey='i')
+
+class Heal(Action):
+    def __init__(self):
+        super().__init__(method=Player.heal, name='Use Medical Bag', hotkey='h')
 
 class Attack(Action):
     def __init__(self, enemy):
@@ -47,5 +47,6 @@ class Flee(Action):
     def __init__(self, tile):
         super().__init__(method=Player.flee, name="Flee", hotkey='f', tile=tile)
 
-
-
+class Quit(Action):
+    def __init__(self):
+        super().__init__(method=Player.quit, name="Quit", hotkey='q')

@@ -1,3 +1,4 @@
+import random
 import items, enemies, actions, world, sys, time, random
  
 class MapTile:
@@ -27,6 +28,8 @@ class MapTile:
         """Returns all of the available actions in this room."""
         moves = self.adjacent_moves()
         moves.append(actions.ViewInventory())
+        moves.append(actions.Heal())
+        moves.append(actions.Quit())
  
         return moves
 
@@ -59,12 +62,16 @@ class StartingRoom(MapTile):
         pass
 
 class LootRoom(MapTile):
-    def __init__(self, x, y, item):
+    def __init__(self, x, y, item, beenThere):
         self.item = item
+        self.beenThere = False
         super().__init__(x, y)
- 
+
     def add_loot(self, player):
-        player.inventory.append(self.item)
+        if(self.beenThere == False):
+            player.inventory.append(self.item)
+            self.beenThere = True
+
  
     def modify_player(self, player):
         self.add_loot(player)
@@ -76,8 +83,18 @@ class EnemyRoom(MapTile):
  
     def modify_player(self, the_player):
         if self.enemy.is_alive():
-            the_player.hp = the_player.hp - self.enemy.damage
-            print("Enemy does {} damage. You have {} HP remaining.".format(self.enemy.damage, the_player.hp))
+            hit = random.randint(1,3)
+            if hit >= 2:
+                the_player.hp = the_player.hp - self.enemy.damage
+                print("Enemy does {} damage. You have {} HP remaining.".format(self.enemy.damage, the_player.hp))
+            else:
+                print("Enemy misses their attack.")
+
+    def available_actions(self):
+        if self.enemy.is_alive():
+            return [actions.Attack(enemy=self.enemy), actions.Flee(tile=self)]
+        else:
+            return self.adjacent_moves()
 
 class EmptyCavePath(MapTile):
     def intro_text(self):
@@ -105,29 +122,18 @@ class GiantSpiderRoom(EnemyRoom):
  
 class FindDaggerRoom(LootRoom):
     def __init__(self, x, y):
-        super().__init__(x, y, items.Dagger())
+        super().__init__(x, y, items.Dagger(), beenThere = False )
  
     def intro_text(self):
-        return """
-        Your notice something shiny in the corner.
-        It's a dagger! You pick it up.
-        """
-
-class EnemyRoom(MapTile):
-    def __init__(self, x, y, enemy):
-        self.enemy = enemy
-        super().__init__(x, y)
- 
-    def modify_player(self, the_player):
-        if self.enemy.is_alive():
-            the_player.hp = the_player.hp - self.enemy.damage
-            print("Enemy does {} damage. You have {} HP remaining.".format(self.enemy.damage, the_player.hp))
- 
-    def available_actions(self):
-        if self.enemy.is_alive():
-            return [actions.Flee(tile=self), actions.Attack(enemy=self.enemy)]
+        if(self.beenThere == False):
+            return """
+            Your notice something shiny in the corner.
+            It's a dagger! You pick it up.
+            """
         else:
-            return self.adjacent_moves()
+            return"""
+            There is nothing there
+            """
 
 class LeaveCaveRoom(MapTile):
     def intro_text(self):
