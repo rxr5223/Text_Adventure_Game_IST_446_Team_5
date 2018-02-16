@@ -61,6 +61,15 @@ class StartingRoom(MapTile):
         #Room has no action on player
         pass
 
+class ColdRoom(MapTile):
+    def intro_text(self):
+        return """
+        A freezing breathe of air flows through you. You feel your bones chill.
+        """
+
+    def modify_player(self, player):
+        player.bodyTemp -= 10
+
 class LootRoom(MapTile):
     def __init__(self, x, y, item, beenThere):
         self.item = item

@@ -6,11 +6,12 @@ class Player():
         self.inventory = [items.Gold(15), items.Pillow(), items.MedicalPack()]
         self.hp = 100
         self.maxHP = 100
+        self.bodyTemp = 98.6
         self.location_x, self.location_y = world.starting_position
         self.victory = False
  
     def is_alive(self):
-        return self.hp > 0
+        return self.hp > 0 and self.bodyTemp > 70
  
     def print_inventory(self):
         for item in self.inventory:

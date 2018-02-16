@@ -15,6 +15,10 @@ def play():
         room.modify_player(player)
         # Check again since the room could have changed the player's state
         if player.is_alive() and not player.victory:
+            print("Player:\n")
+            print("HP:", player.hp)
+            print("Body Temperature:", player.bodyTemp)
+            print("\n")
             print("Choose an action:\n")
             available_actions = room.available_actions()
             for action in available_actions:
@@ -24,6 +28,8 @@ def play():
                 if action_input == action.hotkey:
                     player.do_action(action, **action.kwargs)
                     break
+        elif player.bodyTemp <= 70:
+            print("You froze to death.")
 
 
 if __name__ == "__main__":
